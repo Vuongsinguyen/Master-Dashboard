@@ -13,7 +13,7 @@ Mỗi feedback bao gồm các trường sau:
   "company": "heineken-vietnam-brewery", // Company name (slug format)
   "submitTime": "2024-01-15T09:30:00Z", // ISO timestamp
   "evaluation": "Dislike",           // Dislike, Normal, Like, Love
-  "staff": "Nguyen Van A",           // Staff member name
+  "staff": "Nguyen Van Trung",           // Staff member name
   "issuesGroup": "Service Quality",  // Category of issue
   "issues": ["Long wait time", "Staff attitude"], // Array of specific issues
   "customer": "John Smith",          // Customer name
