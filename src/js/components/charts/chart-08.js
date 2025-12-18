@@ -1837,14 +1837,18 @@ const chart08 = () => {
       }
     },
     tooltip: {
+      enabled: true,
+      shared: false,
+      intersect: true,
+      followCursor: false,
       custom: function({ series, seriesIndex, dataPointIndex, w }) {
         const day = w.globals.seriesNames[seriesIndex];
         const hour = w.globals.labels[dataPointIndex];
         const value = series[seriesIndex][dataPointIndex];
         
-        return '<div class="apexcharts-tooltip-custom" style="padding: 8px 12px; background: white; border: 1px solid #e0e0e0; border-radius: 4px;">' +
-          '<div style="font-weight: 600; margin-bottom: 4px;">' + day + ' - ' + hour + '</div>' +
-          '<div style="color: #3b82f6;"><span style="font-weight: 600;">' + value + '</span> issues</div>' +
+        return '<div class="apexcharts-tooltip-custom" style="padding: 10px 14px; background: white; border: 1px solid #e0e0e0; border-radius: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); transition: none;">' +
+          '<div style="font-weight: 600; margin-bottom: 4px; color: #1f2937; font-size: 13px;">' + day + ' - ' + hour + '</div>' +
+          '<div style="color: #3b82f6; font-size: 14px;"><span style="font-weight: 700;">' + value + '</span> issues</div>' +
           '</div>';
       }
     },
