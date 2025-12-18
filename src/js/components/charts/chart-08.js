@@ -1,5 +1,69 @@
 import ApexCharts from "apexcharts";
 
+// Mock data for all companies - tổng hợp issues theo giờ và ngày
+function generateMockDataForAllCompanies() {
+  const companies = [
+    'heineken-vietnam-brewery',
+    'ttc-group',
+    'moshi-moshi-ramen',
+    'p2p-agency',
+    'e-picos',
+    'hung-thinh-land',
+    'land-tsn-air',
+    'hoan-my-hospital'
+  ];
+  
+  const data = [];
+  const daysOfWeek = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+  
+  for (let day = 0; day < 7; day++) {
+    const dayData = [];
+    for (let hour = 0; hour < 24; hour++) {
+      // Tổng issues từ tất cả các công ty
+      let totalIssues = 0;
+      
+      // Base issues
+      totalIssues += Math.floor(Math.random() * 2);
+      
+      // Morning rush (7:00-9:00) - moderate
+      if (hour >= 7 && hour <= 9) {
+        totalIssues += Math.floor(Math.random() * 4) + 2;
+      }
+      // Lunch time peak (11:00-14:00) - high
+      else if (hour >= 11 && hour <= 14) {
+        totalIssues += Math.floor(Math.random() * 8) + 6;
+      }
+      // Afternoon (15:00-17:00) - moderate
+      else if (hour >= 15 && hour <= 17) {
+        totalIssues += Math.floor(Math.random() * 5) + 3;
+      }
+      // Dinner time peak (18:00-21:00) - very high
+      else if (hour >= 18 && hour <= 21) {
+        totalIssues += Math.floor(Math.random() * 12) + 10;
+      }
+      // Late night (22:00-23:00) - low
+      else if (hour >= 22) {
+        totalIssues += Math.floor(Math.random() * 3) + 1;
+      }
+      
+      // Weekend has significantly more issues
+      if (day >= 5) {
+        totalIssues += Math.floor(Math.random() * 8) + 5;
+      }
+      
+      // Friday has more issues
+      if (day === 4) {
+        totalIssues += Math.floor(Math.random() * 4) + 2;
+      }
+      
+      dayData.push(totalIssues);
+    }
+    data.push(dayData);
+  }
+  
+  return data;
+}
+
 // Time-based issue data
 const timeData = {
   "heineken-vietnam-brewery": {
@@ -746,192 +810,6 @@ const timeData = {
       ]
     ]
   },
-  "e-picos": {
-    "issues": [
-      [
-        1,
-        0,
-        0,
-        1,
-        0,
-        1,
-        0,
-        0,
-        1,
-        1,
-        1,
-        0,
-        0,
-        0,
-        0,
-        0,
-        1,
-        2,
-        1,
-        0,
-        0,
-        1,
-        0,
-        0
-      ],
-      [
-        0,
-        0,
-        0,
-        1,
-        0,
-        0,
-        1,
-        0,
-        0,
-        1,
-        0,
-        0,
-        0,
-        2,
-        0,
-        1,
-        0,
-        0,
-        0,
-        1,
-        1,
-        0,
-        0,
-        1
-      ],
-      [
-        0,
-        1,
-        0,
-        1,
-        0,
-        0,
-        0,
-        1,
-        1,
-        0,
-        0,
-        0,
-        0,
-        1,
-        1,
-        1,
-        1,
-        0,
-        2,
-        0,
-        0,
-        1,
-        1,
-        0
-      ],
-      [
-        0,
-        0,
-        0,
-        1,
-        0,
-        1,
-        0,
-        1,
-        0,
-        2,
-        0,
-        1,
-        1,
-        0,
-        1,
-        0,
-        1,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0
-      ],
-      [
-        2,
-        0,
-        2,
-        0,
-        1,
-        0,
-        1,
-        1,
-        0,
-        0,
-        1,
-        0,
-        1,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0
-      ],
-      [
-        1,
-        0,
-        1,
-        0,
-        0,
-        0,
-        0,
-        1,
-        0,
-        0,
-        0,
-        0,
-        1,
-        0,
-        2,
-        0,
-        0,
-        0,
-        1,
-        1,
-        0,
-        1,
-        0,
-        0
-      ],
-      [
-        0,
-        1,
-        0,
-        1,
-        0,
-        0,
-        0,
-        0,
-        0,
-        1,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        1,
-        0,
-        0,
-        0,
-        0,
-        0
-      ]
-    ]
-  },
   "hung-thinh-land": {
     "issues": [
       [
@@ -1489,6 +1367,378 @@ const timeData = {
         1
       ]
     ]
+  },
+  "cocacola-vietnam": {
+    "issues": [
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        2,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  "redbull-vietnam": {
+    "issues": [
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    ]
   }
 };
 
@@ -1499,39 +1749,18 @@ const timeData = {
 
 
 const chart08 = () => {
-  let chartInstance;
-
   const daysOfWeek = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
   const hours = Array.from({length: 24}, (_, i) => i);
 
-  function getSelectedCompanies() {
-    const checkboxes = document.querySelectorAll('input[type="checkbox"]:not(#select-all):not(.month-checkbox):not(#select-all-months)');
-    return Array.from(checkboxes).filter(cb => cb.checked).map(cb => cb.nextSibling.textContent.trim().toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, ''));
-  }
+  // Sử dụng dữ liệu tổng hợp từ tất cả các công ty
+  const mockData = generateMockDataForAllCompanies();
 
-  function aggregateTimeData(companies) {
-    const aggregated = Array(7).fill().map(() => Array(24).fill(0));
-
-    companies.forEach(company => {
-      const data = timeData[company];
-      if (data && data.issues) {
-        data.issues.forEach((dayData, dayIndex) => {
-          dayData.forEach((hourValue, hourIndex) => {
-            aggregated[dayIndex][hourIndex] += hourValue;
-          });
-        });
-      }
-    });
-
-    return aggregated;
-  }
-
-  function findPeakTime(aggregated) {
+  function findPeakTime(data) {
     let maxValue = 0;
     let peakHour = 0;
     let peakDay = 0;
 
-    aggregated.forEach((dayData, dayIndex) => {
+    data.forEach((dayData, dayIndex) => {
       dayData.forEach((value, hourIndex) => {
         if (value > maxValue) {
           maxValue = value;
@@ -1548,41 +1777,36 @@ const chart08 = () => {
     };
   }
 
-  function findBusiestDay(aggregated) {
-    const dayTotals = aggregated.map(dayData => dayData.reduce((sum, val) => sum + val, 0));
+  function findBusiestDay(data) {
+    const dayTotals = data.map(dayData => dayData.reduce((sum, val) => sum + val, 0));
     const maxIndex = dayTotals.indexOf(Math.max(...dayTotals));
     return daysOfWeek[maxIndex];
   }
 
-  function updateKPIs(aggregated) {
-    const peak = findPeakTime(aggregated);
-    const busiestDay = findBusiestDay(aggregated);
+  function updateKPIs(data) {
+    const peak = findPeakTime(data);
+    const busiestDay = findBusiestDay(data);
 
     document.getElementById('peak-time').textContent = peak.time;
     document.getElementById('busiest-day').textContent = busiestDay;
     document.getElementById('staffing-tip').textContent = peak.value > 20 ? 'Add 3+ staff' : peak.value > 10 ? 'Add 2 staff' : 'Add 1 staff';
   }
 
-  const initialCompanies = getSelectedCompanies();
-  const initialData = aggregateTimeData(initialCompanies);
-
-  // Prepare data for heatmap
-  const series = [];
-  initialData.forEach((dayData, dayIndex) => {
-    dayData.forEach((value, hourIndex) => {
-      series.push({
-        x: `${hourIndex.toString().padStart(2, '0')}:00`,
-        y: daysOfWeek[dayIndex],
-        value: value
-      });
-    });
+  // Prepare data for heatmap - each series item is a day with its hourly data
+  const series = mockData.map((dayData, dayIndex) => {
+    return {
+      name: daysOfWeek[dayIndex],
+      data: dayData.map((value, hourIndex) => {
+        return {
+          x: `${hourIndex.toString().padStart(2, '0')}:00`,
+          y: value
+        };
+      })
+    };
   });
 
   const chartEightOptions = {
-    series: [{
-      name: 'Issues',
-      data: series
-    }],
+    series: series,
     chart: {
       fontFamily: "Outfit, sans-serif",
       type: "heatmap",
@@ -1594,21 +1818,7 @@ const chart08 = () => {
     dataLabels: {
       enabled: false
     },
-    colors: ["#e3f2fd", "#bbdefb", "#90caf9", "#64b5f6", "#42a5f5", "#2196f3", "#1e88e5", "#1976d2", "#1565c0", "#0d47a1"],
-    xaxis: {
-      type: 'category',
-      categories: hours.map(h => `${h.toString().padStart(2, '0')}:00`),
-      title: {
-        text: 'Hour of Day'
-      }
-    },
-    yaxis: {
-      type: 'category',
-      categories: daysOfWeek,
-      title: {
-        text: 'Day of Week'
-      }
-    },
+    colors: ["#3b82f6"],
     plotOptions: {
       heatmap: {
         shadeIntensity: 0.5,
@@ -1616,22 +1826,26 @@ const chart08 = () => {
         useFillColorAsStroke: true,
         colorScale: {
           ranges: [
-            { from: 0, to: 0, color: '#f3f4f6', name: 'No Issues' },
-            { from: 1, to: 5, color: '#dbeafe', name: 'Low' },
-            { from: 6, to: 10, color: '#bfdbfe', name: 'Medium' },
-            { from: 11, to: 15, color: '#93c5fd', name: 'High' },
-            { from: 16, to: 20, color: '#60a5fa', name: 'Very High' },
-            { from: 21, to: 30, color: '#3b82f6', name: 'Critical' },
-            { from: 31, to: 50, color: '#1d4ed8', name: 'Extreme' }
+            { from: 0, to: 2, color: '#f0f9ff', name: 'Very Low' },
+            { from: 3, to: 5, color: '#dbeafe', name: 'Low' },
+            { from: 6, to: 10, color: '#93c5fd', name: 'Medium' },
+            { from: 11, to: 15, color: '#60a5fa', name: 'High' },
+            { from: 16, to: 20, color: '#3b82f6', name: 'Very High' },
+            { from: 21, to: 100, color: '#1d4ed8', name: 'Critical' }
           ]
         }
       }
     },
     tooltip: {
-      y: {
-        formatter: function (val) {
-          return val;
-        }
+      custom: function({ series, seriesIndex, dataPointIndex, w }) {
+        const day = w.globals.seriesNames[seriesIndex];
+        const hour = w.globals.labels[dataPointIndex];
+        const value = series[seriesIndex][dataPointIndex];
+        
+        return '<div class="apexcharts-tooltip-custom" style="padding: 8px 12px; background: white; border: 1px solid #e0e0e0; border-radius: 4px;">' +
+          '<div style="font-weight: 600; margin-bottom: 4px;">' + day + ' - ' + hour + '</div>' +
+          '<div style="color: #3b82f6;"><span style="font-weight: 600;">' + value + '</span> issues</div>' +
+          '</div>';
       }
     },
     legend: {
@@ -1643,63 +1857,7 @@ const chart08 = () => {
   const chartEight = new ApexCharts(document.querySelector("#chartEight"), chartEightOptions);
   chartEight.render();
 
-  updateKPIs(initialData);
-
-  // Listen for checkbox changes
-  document.addEventListener('change', (e) => {
-    if (e.target.type === 'checkbox' && !e.target.classList.contains('month-checkbox') && e.target.id !== 'select-all-months') {
-      const companies = getSelectedCompanies();
-      const aggregated = aggregateTimeData(companies);
-
-      const newSeries = [];
-      aggregated.forEach((dayData, dayIndex) => {
-        dayData.forEach((value, hourIndex) => {
-          newSeries.push({
-            x: `${hourIndex.toString().padStart(2, '0')}:00`,
-            y: daysOfWeek[dayIndex],
-            value: value
-          });
-        });
-      });
-
-      chartEight.updateSeries([{
-        name: 'Issues',
-        data: newSeries
-      }]);
-
-      updateKPIs(aggregated);
-    }
-  });
-
-  // Handle select all checkbox
-  const selectAllCheckbox = document.getElementById('select-all');
-  if (selectAllCheckbox) {
-    selectAllCheckbox.addEventListener('change', () => {
-      const companyCheckboxes = document.querySelectorAll('input[type="checkbox"]:not(#select-all):not(.month-checkbox):not(#select-all-months)');
-      companyCheckboxes.forEach(cb => cb.checked = selectAllCheckbox.checked);
-
-      const companies = getSelectedCompanies();
-      const aggregated = aggregateTimeData(companies);
-
-      const newSeries = [];
-      aggregated.forEach((dayData, dayIndex) => {
-        dayData.forEach((value, hourIndex) => {
-          newSeries.push({
-            x: `${hourIndex.toString().padStart(2, '0')}:00`,
-            y: daysOfWeek[dayIndex],
-            value: value
-          });
-        });
-      });
-
-      chartEight.updateSeries([{
-        name: 'Issues',
-        data: newSeries
-      }]);
-
-      updateKPIs(aggregated);
-    });
-  }
+  updateKPIs(mockData);
 };
 
 export default chart08;
