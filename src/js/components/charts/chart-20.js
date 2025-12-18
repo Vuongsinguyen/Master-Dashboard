@@ -8,8 +8,9 @@ const chart20 = () => {
     // Feedback data by country
     const feedbackData = {
       "VN": 1669, // Vietnam
-      "JP": 234,  // Japan
-      "US": 150   // United States
+      "JP": 734,  // Japan (234 + 500)
+      "US": 800,  // United States (150 + 650)
+      "TW": 400   // Taiwan
     };
 
     const map = new jsVectorMap({
@@ -54,69 +55,65 @@ const chart20 = () => {
           name: "Việt Nam",
           coords: [14.0583, 108.2772],
           feedbackCount: feedbackData["VN"] || 0,
-          label: `${feedbackData["VN"] || 0}`
+          style: {
+            initial: {
+              fill: "#1D4ED8"
+            }
+          },
+          tooltip: `<div style="text-align: center; font-weight: bold; font-size: 14px;">Việt Nam</div>
+                   <div style="text-align: center; color: #1D4ED8; font-size: 16px; font-weight: bold;">Số lượng Feedbacks: ${feedbackData["VN"] || 0}</div>`
         },
         {
           name: "Nhật Bản",
           coords: [36.2048, 138.2529],
           feedbackCount: feedbackData["JP"] || 0,
-          label: `${feedbackData["JP"] || 0}`
+          style: {
+            initial: {
+              fill: "#1D4ED8"
+            }
+          },
+          tooltip: `<div style="text-align: center; font-weight: bold; font-size: 14px;">Nhật Bản</div>
+                   <div style="text-align: center; color: #1D4ED8; font-size: 16px; font-weight: bold;">Số lượng Feedbacks: ${feedbackData["JP"] || 0}</div>`
         },
         {
           name: "Hoa Kỳ",
           coords: [37.0902, -95.7129],
           feedbackCount: feedbackData["US"] || 0,
-          label: `${feedbackData["US"] || 0}`
+          style: {
+            initial: {
+              fill: "#1D4ED8"
+            }
+          },
+          tooltip: `<div style="text-align: center; font-weight: bold; font-size: 14px;">Hoa Kỳ</div>
+                   <div style="text-align: center; color: #1D4ED8; font-size: 16px; font-weight: bold;">Số lượng Feedbacks: ${feedbackData["US"] || 0}</div>`
+        },
+        {
+          name: "Đài Loan",
+          coords: [23.6978, 120.9605],
+          feedbackCount: feedbackData["TW"] || 0,
+          style: {
+            initial: {
+              fill: "#1D4ED8"
+            }
+          },
+          tooltip: `<div style="text-align: center; font-weight: bold; font-size: 14px;">Đài Loan</div>
+                   <div style="text-align: center; color: #1D4ED8; font-size: 16px; font-weight: bold;">Số lượng Feedbacks: ${feedbackData["TW"] || 0}</div>`
         }
       ],
 
       markerStyle: {
         initial: {
-          strokeWidth: 1,
+          strokeWidth: 2,
+          stroke: "#FFFFFF",
           fill: "#1D4ED8",
           fillOpacity: 1,
-          r: 8
+          r: 12
         },
         hover: {
           fill: "#1D4ED8",
           fillOpacity: 1,
-          strokeWidth: 2,
-          r: 10
-        }
-      },
-
-      labels: {
-        markers: {
-          render: function(index) {
-            return this.markers[index].label;
-          },
-          offsets: [
-            [0, -15], // Việt Nam
-            [0, -15], // Nhật Bản
-            [0, -15]  // Hoa Kỳ
-          ]
-        }
-      },
-
-      onMarkerTooltipShow: function (tooltip, index) {
-        const marker = this.markers[index];
-        if (tooltip && tooltip.selector) {
-          tooltip.selector.innerHTML =
-            `<strong>${marker.name}</strong><br/>Feedbacks: ${marker.feedbackCount}`;
-        }
-      },
-
-      onRegionTooltipShow: function (tooltip, code) {
-        const count = feedbackData[code] || 0;
-        const countryNames = {
-          "VN": "Việt Nam",
-          "JP": "Nhật Bản",
-          "US": "Hoa Kỳ"
-        };
-
-        const countryName = countryNames[code] || code;
-        if (tooltip && tooltip.selector) {
-          tooltip.selector.innerHTML = `<strong>${countryName}</strong><br/>Feedbacks: ${count}`;
+          strokeWidth: 3,
+          r: 15
         }
       },
 
