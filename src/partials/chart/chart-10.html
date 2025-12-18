@@ -1,0 +1,98 @@
+<div
+  class="overflow-hidden rounded-2xl border border-gray-200 bg-white px-5 pt-5 dark:border-gray-800 dark:bg-white/[0.03] sm:px-6 sm:pt-6"
+>
+  <div class="flex items-center justify-between">
+    <h3 class="text-lg font-semibold text-gray-800 dark:text-white/90">
+      Response Time & Action Rate
+    </h3>
+
+    <div x-data="{openDropDown: false}" class="relative h-fit">
+      <button
+        @click="openDropDown = !openDropDown"
+        :class="openDropDown ? 'text-gray-700 dark:text-white' : 'text-gray-400 hover:text-gray-700 dark:hover:text-white'"
+      >
+        <svg
+          class="fill-current"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            fill-rule="evenodd"
+            clip-rule="evenodd"
+            d="M10.2441 6C10.2441 5.0335 11.0276 4.25 11.9941 4.25H12.0041C12.9706 4.25 13.7541 5.0335 13.7541 6C13.7541 6.9665 12.9706 7.75 12.0041 7.75H11.9941C11.0276 7.75 10.2441 6.9665 10.2441 6ZM10.2441 18C10.2441 17.0335 11.0276 16.25 11.9941 16.25H12.0041C12.9706 16.25 13.7541 17.0335 13.7541 18C13.7541 18.9665 12.9706 19.75 12.0041 19.75H11.9941C11.0276 19.75 10.2441 18.9665 10.2441 18ZM11.9941 10.25C11.0276 10.25 10.2441 11.0335 10.2441 12C10.2441 12.9665 11.0276 13.75 11.9941 13.75H12.0041C12.9706 13.75 13.7541 12.9665 13.7541 12C13.7541 11.0335 12.9706 10.25 12.0041 10.25H11.9941Z"
+            fill=""
+          />
+        </svg>
+      </button>
+      <div
+        x-show="openDropDown"
+        @click.outside="openDropDown = false"
+        class="absolute right-0 z-40 w-40 p-2 space-y-1 bg-white border border-gray-200 top-full rounded-2xl shadow-theme-lg dark:border-gray-800 dark:bg-gray-dark"
+      >
+        <button
+          class="flex w-full px-3 py-2 font-medium text-left text-gray-500 rounded-lg text-theme-xs hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300"
+        >
+          View More
+        </button>
+        <button
+          class="flex w-full px-3 py-2 font-medium text-left text-gray-500 rounded-lg text-theme-xs hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300"
+        >
+          Delete
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="mb-4">
+    <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
+      <div class="rounded-lg border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-gray-900">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Avg Response Time</p>
+            <p class="text-2xl font-bold text-gray-800 dark:text-white" id="avg-response-time">12 min</p>
+          </div>
+          <div class="h-10 w-10 rounded-full bg-blue-100 p-2 dark:bg-blue-900">
+            <svg class="h-6 w-6 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+          </div>
+        </div>
+      </div>
+      <div class="rounded-lg border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-gray-900">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Action Rate <10min</p>
+            <p class="text-2xl font-bold text-gray-800 dark:text-white" id="action-rate-10min">78%</p>
+          </div>
+          <div class="h-10 w-10 rounded-full bg-green-100 p-2 dark:bg-green-900">
+            <svg class="h-6 w-6 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+            </svg>
+          </div>
+        </div>
+      </div>
+      <div class="rounded-lg border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-gray-900">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Customer Save Rate</p>
+            <p class="text-2xl font-bold text-gray-800 dark:text-white" id="customer-save-rate">85%</p>
+          </div>
+          <div class="h-10 w-10 rounded-full bg-purple-100 p-2 dark:bg-purple-900">
+            <svg class="h-6 w-6 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="max-w-full overflow-x-auto custom-scrollbar">
+    <div class="-ml-5 min-w-[650px] pl-2 xl:min-w-full">
+      <div id="chartTen"></div>
+    </div>
+  </div>
+</div>

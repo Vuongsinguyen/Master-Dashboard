@@ -88,6 +88,10 @@ module.exports = {
         type: "asset/resource",
       },
       {
+        test: /\.md$/,
+        type: "asset/resource",
+      },
+      {
         test: /\.html$/,
         loader: "html-loader",
         options: {

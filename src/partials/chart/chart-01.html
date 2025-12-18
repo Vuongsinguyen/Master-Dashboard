@@ -3,45 +3,116 @@
 >
   <div class="flex items-center justify-between">
     <h3 class="text-lg font-semibold text-gray-800 dark:text-white/90">
-      Monthly Sales
+      Total Feedbacks
     </h3>
 
-    <div x-data="{openDropDown: false}" class="relative h-fit">
-      <button
-        @click="openDropDown = !openDropDown"
-        :class="openDropDown ? 'text-gray-700 dark:text-white' : 'text-gray-400 hover:text-gray-700 dark:hover:text-white'"
-      >
-        <svg
-          class="fill-current"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            fill-rule="evenodd"
-            clip-rule="evenodd"
-            d="M10.2441 6C10.2441 5.0335 11.0276 4.25 11.9941 4.25H12.0041C12.9706 4.25 13.7541 5.0335 13.7541 6C13.7541 6.9665 12.9706 7.75 12.0041 7.75H11.9941C11.0276 7.75 10.2441 6.9665 10.2441 6ZM10.2441 18C10.2441 17.0335 11.0276 16.25 11.9941 16.25H12.0041C12.9706 16.25 13.7541 17.0335 13.7541 18C13.7541 18.9665 12.9706 19.75 12.0041 19.75H11.9941C11.0276 19.75 10.2441 18.9665 10.2441 18ZM11.9941 10.25C11.0276 10.25 10.2441 11.0335 10.2441 12C10.2441 12.9665 11.0276 13.75 11.9941 13.75H12.0041C12.9706 13.75 13.7541 12.9665 13.7541 12C13.7541 11.0335 12.9706 10.25 12.0041 10.25H11.9941Z"
-            fill=""
-          />
-        </svg>
-      </button>
-      <div
-        x-show="openDropDown"
-        @click.outside="openDropDown = false"
-        class="absolute right-0 z-40 w-40 p-2 space-y-1 bg-white border border-gray-200 top-full rounded-2xl shadow-theme-lg dark:border-gray-800 dark:bg-gray-dark"
-      >
+    <div x-data="{ 
+      openCompanyFilter: false,
+      selectedCompanies: ['heineken-vietnam-brewery', 'ttc-group', 'moshi-moshi-ramen', 'p2p-agency', 'e-picos', 'hung-thinh-land', 'land-tsn-air', 'hoan-my-hospital'],
+      companies: [
+        { id: 'heineken-vietnam-brewery', name: 'Heineken Vietnam Brewery' },
+        { id: 'ttc-group', name: 'TTC Group' },
+        { id: 'moshi-moshi-ramen', name: 'Moshi Moshi Ramen' },
+        { id: 'p2p-agency', name: 'P2P Agency' },
+        { id: 'e-picos', name: 'E-PICOS' },
+        { id: 'hung-thinh-land', name: 'Hung Thinh Land' },
+        { id: 'land-tsn-air', name: 'Land TSN Air' },
+        { id: 'hoan-my-hospital', name: 'Hoan My Hospital' }
+      ],
+      updateChart() {
+        // Dispatch custom event to trigger chart update
+        window.dispatchEvent(new CustomEvent('chart1-filter-update', { 
+          detail: { selectedCompanies: this.selectedCompanies } 
+        }));
+      }
+    }" class="flex items-center gap-3">
+      
+      <!-- Company Filter Dropdown -->
+      <div class="relative">
         <button
-          class="flex w-full px-3 py-2 font-medium text-left text-gray-500 rounded-lg text-theme-xs hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300"
+          @click="openCompanyFilter = !openCompanyFilter"
+          class="flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700"
         >
-          View More
+          <span>Filter Companies</span>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+          </svg>
         </button>
+        
+        <div
+          x-show="openCompanyFilter"
+          @click.outside="openCompanyFilter = false"
+          class="absolute right-0 z-50 w-64 p-3 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg dark:border-gray-700 dark:bg-gray-800"
+        >
+          <div class="space-y-2">
+            <!-- Select All -->
+            <label class="flex items-center gap-2 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 p-2 rounded">
+              <input
+                type="checkbox"
+                id="chart1-select-all"
+                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                @change="if($el.checked) { selectedCompanies = companies.map(c => c.id) } else { selectedCompanies = [] }; updateChart()"
+              >
+              <span class="text-sm font-medium text-gray-900 dark:text-white">Select All</span>
+            </label>
+            
+            <div class="border-t border-gray-200 dark:border-gray-600"></div>
+            
+            <!-- Individual Companies -->
+            <template x-for="company in companies" :key="company.id">
+              <label class="flex items-center gap-2 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 p-2 rounded">
+                <input
+                  type="checkbox"
+                  :id="'chart1-' + company.id"
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                  :checked="selectedCompanies.includes(company.id)"
+                  @change="if($el.checked) { selectedCompanies.push(company.id) } else { selectedCompanies = selectedCompanies.filter(id => id !== company.id) }; updateChart()"
+                >
+                <span class="text-sm text-gray-700 dark:text-gray-300" x-text="company.name"></span>
+              </label>
+            </template>
+          </div>
+        </div>
+      </div>
+
+      <!-- Existing dropdown menu -->
+      <div x-data="{openDropDown: false}" class="relative h-fit">
         <button
-          class="flex w-full px-3 py-2 font-medium text-left text-gray-500 rounded-lg text-theme-xs hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300"
+          @click="openDropDown = !openDropDown"
+          :class="openDropDown ? 'text-gray-700 dark:text-white' : 'text-gray-400 hover:text-gray-700 dark:hover:text-white'"
         >
-          Delete
+          <svg
+            class="fill-current"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M10.2441 6C10.2441 5.0335 11.0276 4.25 11.9941 4.25H12.0041C12.9706 4.25 13.7541 5.0335 13.7541 6C13.7541 6.9665 12.9706 7.75 12.0041 7.75H11.9941C11.0276 7.75 10.2441 6.9665 10.2441 6ZM10.2441 18C10.2441 17.0335 11.0276 16.25 11.9941 16.25H12.0041C12.9706 16.25 13.7541 17.0335 13.7541 18C13.7541 18.9665 12.9706 19.75 12.0041 19.75H11.9941C11.0276 19.75 10.2441 18.9665 10.2441 18ZM11.9941 10.25C11.0276 10.25 10.2441 11.0335 10.2441 12C10.2441 12.9665 11.0276 13.75 11.9941 13.75H12.0041C12.9706 13.75 13.7541 12.9665 13.7541 12C13.7541 11.0335 12.9706 10.25 12.0041 10.25H11.9941Z"
+              fill=""
+            />
+          </svg>
         </button>
+        <div
+          x-show="openDropDown"
+          @click.outside="openDropDown = false"
+          class="absolute right-0 z-40 w-40 p-2 space-y-1 bg-white border border-gray-200 top-full rounded-2xl shadow-theme-lg dark:border-gray-800 dark:bg-gray-dark"
+        >
+          <button
+            class="flex w-full px-3 py-2 font-medium text-left text-gray-500 rounded-lg text-theme-xs hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300"
+          >
+            View More
+          </button>
+          <button
+            class="flex w-full px-3 py-2 font-medium text-left text-gray-500 rounded-lg text-theme-xs hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300"
+          >
+            Delete
+          </button>
+        </div>
       </div>
     </div>
   </div>
