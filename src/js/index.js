@@ -26,6 +26,7 @@ import chart15 from "./components/charts/chart-15";
 import chart16 from "./components/charts/chart-16";
 import chart17 from "./components/charts/chart-17";
 import chart18 from "./components/charts/chart-18";
+import chart20 from "./components/charts/chart-20";
 import map01 from "./components/map-01";
 import "./components/calendar-init.js";
 import "./components/image-resize";
@@ -84,6 +85,7 @@ document.addEventListener("DOMContentLoaded", () => {
   chart16();
   chart17();
   chart18();
+  chart20();
   map01();
 });
 
