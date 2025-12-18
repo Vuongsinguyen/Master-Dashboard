@@ -4,7 +4,7 @@ import ApexCharts from "apexcharts";
 const staffData = {
   "heineken-vietnam-brewery": {
     "teams": {
-      "Nguyen Van A": [
+      "Nguyen van An": [
         7,
         4,
         4,
@@ -18,7 +18,7 @@ const staffData = {
         7,
         9
       ],
-      "Tran Thi B": [
+      "Tran Thi Bao": [
         8,
         0,
         5,
@@ -32,7 +32,7 @@ const staffData = {
         0,
         4
       ],
-      "Le Van C": [
+      "Le Van Cuong": [
         6,
         4,
         10,
@@ -46,7 +46,7 @@ const staffData = {
         0,
         0
       ],
-      "Tran Van G": [
+      "Tran Van Giang": [
         4,
         5,
         7,
@@ -60,7 +60,7 @@ const staffData = {
         10,
         9
       ],
-      "Hoang Thi J": [
+      "Hoang Thi Lan": [
         4,
         4,
         10,
@@ -74,7 +74,7 @@ const staffData = {
         6,
         6
       ],
-      "Pham Thi D": [
+      "Pham Thi Dung": [
         6,
         7,
         5,
@@ -88,7 +88,7 @@ const staffData = {
         4,
         4
       ],
-      "Pham Van I": [
+      "Pham Van Minh": [
         4,
         9,
         8,
@@ -102,7 +102,7 @@ const staffData = {
         10,
         10
       ],
-      "Hoang Van E": [
+      "Hoang Van Em": [
         3,
         8,
         0,
@@ -116,7 +116,7 @@ const staffData = {
         0,
         3
       ],
-      "Nguyen Thi F": [
+      "Nguyen Thi Phuong": [
         0,
         7,
         0,
@@ -130,7 +130,7 @@ const staffData = {
         6,
         6
       ],
-      "Le Thi H": [
+      "Le Thi Hoa": [
         8,
         0,
         4,
@@ -148,7 +148,7 @@ const staffData = {
   },
   "ttc-group": {
     "teams": {
-      "Pham Thi D": [
+      "Pham Thi Dung": [
         10,
         10,
         5,
@@ -162,7 +162,7 @@ const staffData = {
         0,
         8
       ],
-      "Hoang Van E": [
+      "Hoang Van Em": [
         7,
         10,
         8,
@@ -176,7 +176,7 @@ const staffData = {
         0,
         10
       ],
-      "Le Van C": [
+      "Le Van Cuong": [
         6,
         0,
         8,
@@ -190,7 +190,7 @@ const staffData = {
         3,
         4
       ],
-      "Pham Van I": [
+      "Pham Van Minh": [
         7,
         0,
         4,
@@ -204,7 +204,7 @@ const staffData = {
         0,
         10
       ],
-      "Le Thi H": [
+      "Le Thi Hoa": [
         6,
         0,
         6,
@@ -218,7 +218,7 @@ const staffData = {
         8,
         6
       ],
-      "Tran Van G": [
+      "Tran Van Giang": [
         10,
         6,
         4,
@@ -232,7 +232,7 @@ const staffData = {
         10,
         6
       ],
-      "Hoang Thi J": [
+      "Hoang Thi Lan": [
         8,
         7,
         6,
@@ -246,7 +246,7 @@ const staffData = {
         8,
         5
       ],
-      "Nguyen Van A": [
+      "Nguyen van An": [
         8,
         4,
         8,
@@ -260,7 +260,7 @@ const staffData = {
         4,
         8
       ],
-      "Tran Thi B": [
+      "Tran Thi Bao": [
         6,
         4,
         6,
@@ -274,7 +274,7 @@ const staffData = {
         3,
         9
       ],
-      "Nguyen Thi F": [
+      "Nguyen Thi Phuong": [
         4,
         3,
         6,
@@ -292,7 +292,7 @@ const staffData = {
   },
   "moshi-moshi-ramen": {
     "teams": {
-      "Nguyen Thi F": [
+      "Nguyen Thi Phuong": [
         5,
         9,
         3,
@@ -306,7 +306,7 @@ const staffData = {
         10,
         4
       ],
-      "Tran Van G": [
+      "Tran Van Giang": [
         10,
         6,
         3,
@@ -320,7 +320,7 @@ const staffData = {
         8,
         10
       ],
-      "Hoang Van E": [
+      "Hoang Van Em": [
         4,
         0,
         0,
@@ -334,7 +334,7 @@ const staffData = {
         3,
         6
       ],
-      "Nguyen Van A": [
+      "Nguyen van An": [
         7,
         10,
         3,
@@ -348,7 +348,7 @@ const staffData = {
         0,
         0
       ],
-      "Tran Thi B": [
+      "Tran Thi Bao": [
         4,
         0,
         6,
@@ -362,7 +362,7 @@ const staffData = {
         0,
         6
       ],
-      "Pham Van I": [
+      "Pham Van Minh": [
         7,
         6,
         3,
@@ -376,7 +376,7 @@ const staffData = {
         8,
         0
       ],
-      "Hoang Thi J": [
+      "Hoang Thi Lan": [
         6,
         8,
         10,
@@ -390,7 +390,7 @@ const staffData = {
         7,
         6
       ],
-      "Le Thi H": [
+      "Le Thi Hoa": [
         8,
         10,
         0,
@@ -404,7 +404,7 @@ const staffData = {
         6,
         0
       ],
-      "Le Van C": [
+      "Le Van Cuong": [
         4,
         8,
         6,
@@ -418,7 +418,7 @@ const staffData = {
         4,
         0
       ],
-      "Pham Thi D": [
+      "Pham Thi Dung": [
         0,
         0,
         0,
@@ -436,7 +436,7 @@ const staffData = {
   },
   "p2p-agency": {
     "teams": {
-      "Le Thi H": [
+      "Le Thi Hoa": [
         6,
         6,
         6,
@@ -450,7 +450,7 @@ const staffData = {
         4,
         0
       ],
-      "Pham Van I": [
+      "Pham Van Minh": [
         6,
         4,
         0,
@@ -464,7 +464,7 @@ const staffData = {
         6,
         0
       ],
-      "Tran Van G": [
+      "Tran Van Giang": [
         8,
         0,
         10,
@@ -478,7 +478,7 @@ const staffData = {
         4,
         8
       ],
-      "Tran Thi B": [
+      "Tran Thi Bao": [
         6,
         5,
         8,
@@ -492,7 +492,7 @@ const staffData = {
         0,
         0
       ],
-      "Le Van C": [
+      "Le Van Cuong": [
         6,
         0,
         10,
@@ -506,7 +506,7 @@ const staffData = {
         0,
         8
       ],
-      "Pham Thi D": [
+      "Pham Thi Dung": [
         7,
         0,
         5,
@@ -520,7 +520,7 @@ const staffData = {
         8,
         0
       ],
-      "Nguyen Van A": [
+      "Nguyen van An": [
         10,
         0,
         7,
@@ -534,7 +534,7 @@ const staffData = {
         9,
         10
       ],
-      "Nguyen Thi F": [
+      "Nguyen Thi Phuong": [
         8,
         7,
         0,
@@ -548,7 +548,7 @@ const staffData = {
         0,
         0
       ],
-      "Hoang Van E": [
+      "Hoang Van Em": [
         6,
         0,
         10,
@@ -562,7 +562,7 @@ const staffData = {
         3,
         5
       ],
-      "Hoang Thi J": [
+      "Hoang Thi Lan": [
         0,
         8,
         0,
@@ -580,7 +580,7 @@ const staffData = {
   },
   "e-picos": {
     "teams": {
-      "Hoang Thi J": [
+      "Hoang Thi Lan": [
         8,
         6,
         5,
@@ -594,7 +594,7 @@ const staffData = {
         4,
         6
       ],
-      "Pham Thi D": [
+      "Pham Thi Dung": [
         5,
         6,
         9,
@@ -608,7 +608,7 @@ const staffData = {
         7,
         4
       ],
-      "Tran Van G": [
+      "Tran Van Giang": [
         6,
         8,
         0,
@@ -622,7 +622,7 @@ const staffData = {
         6,
         10
       ],
-      "Nguyen Thi F": [
+      "Nguyen Thi Phuong": [
         4,
         7,
         6,
@@ -636,7 +636,7 @@ const staffData = {
         4,
         8
       ],
-      "Pham Van I": [
+      "Pham Van Minh": [
         9,
         5,
         8,
@@ -650,7 +650,7 @@ const staffData = {
         3,
         0
       ],
-      "Le Thi H": [
+      "Le Thi Hoa": [
         8,
         9,
         8,
@@ -664,7 +664,7 @@ const staffData = {
         4,
         0
       ],
-      "Hoang Van E": [
+      "Hoang Van Em": [
         4,
         8,
         7,
@@ -678,7 +678,7 @@ const staffData = {
         4,
         5
       ],
-      "Nguyen Van A": [
+      "Nguyen van An": [
         8,
         3,
         3,
@@ -692,7 +692,7 @@ const staffData = {
         6,
         9
       ],
-      "Le Van C": [
+      "Le Van Cuong": [
         7,
         0,
         4,
@@ -706,7 +706,7 @@ const staffData = {
         3,
         6
       ],
-      "Tran Thi B": [
+      "Tran Thi Bao": [
         7,
         6,
         7,
@@ -724,7 +724,7 @@ const staffData = {
   },
   "hung-thinh-land": {
     "teams": {
-      "Pham Thi D": [
+      "Pham Thi Dung": [
         4,
         4,
         0,
@@ -738,7 +738,7 @@ const staffData = {
         0,
         4
       ],
-      "Nguyen Van A": [
+      "Nguyen van An": [
         7,
         5,
         3,
@@ -752,7 +752,7 @@ const staffData = {
         4,
         0
       ],
-      "Hoang Van E": [
+      "Hoang Van Em": [
         9,
         6,
         0,
@@ -766,7 +766,7 @@ const staffData = {
         10,
         4
       ],
-      "Pham Van I": [
+      "Pham Van Minh": [
         6,
         8,
         8,
@@ -780,7 +780,7 @@ const staffData = {
         7,
         8
       ],
-      "Le Van C": [
+      "Le Van Cuong": [
         9,
         10,
         10,
@@ -794,7 +794,7 @@ const staffData = {
         0,
         6
       ],
-      "Le Thi H": [
+      "Le Thi Hoa": [
         4,
         10,
         9,
@@ -808,7 +808,7 @@ const staffData = {
         4,
         6
       ],
-      "Tran Van G": [
+      "Tran Van Giang": [
         5,
         6,
         0,
@@ -822,7 +822,7 @@ const staffData = {
         8,
         4
       ],
-      "Nguyen Thi F": [
+      "Nguyen Thi Phuong": [
         4,
         8,
         8,
@@ -836,7 +836,7 @@ const staffData = {
         9,
         6
       ],
-      "Hoang Thi J": [
+      "Hoang Thi Lan": [
         4,
         6,
         0,
@@ -850,7 +850,7 @@ const staffData = {
         0,
         4
       ],
-      "Tran Thi B": [
+      "Tran Thi Bao": [
         5,
         9,
         10,
@@ -868,7 +868,7 @@ const staffData = {
   },
   "land-tsn-air": {
     "teams": {
-      "Pham Thi D": [
+      "Pham Thi Dung": [
         6,
         9,
         6,
@@ -882,7 +882,7 @@ const staffData = {
         9,
         4
       ],
-      "Pham Van I": [
+      "Pham Van Minh": [
         10,
         4,
         0,
@@ -896,7 +896,7 @@ const staffData = {
         3,
         0
       ],
-      "Nguyen Thi F": [
+      "Nguyen Thi Phuong": [
         8,
         4,
         7,
@@ -910,7 +910,7 @@ const staffData = {
         10,
         4
       ],
-      "Tran Van G": [
+      "Tran Van Giang": [
         6,
         10,
         0,
@@ -924,7 +924,7 @@ const staffData = {
         3,
         0
       ],
-      "Hoang Van E": [
+      "Hoang Van Em": [
         4,
         10,
         0,
@@ -938,7 +938,7 @@ const staffData = {
         4,
         10
       ],
-      "Le Van C": [
+      "Le Van Cuong": [
         3,
         0,
         0,
@@ -952,7 +952,7 @@ const staffData = {
         6,
         9
       ],
-      "Nguyen Van A": [
+      "Nguyen van An": [
         8,
         0,
         10,
@@ -966,7 +966,7 @@ const staffData = {
         8,
         10
       ],
-      "Le Thi H": [
+      "Le Thi Hoa": [
         6,
         6,
         6,
@@ -980,7 +980,7 @@ const staffData = {
         0,
         5
       ],
-      "Tran Thi B": [
+      "Tran Thi Bao": [
         0,
         9,
         7,
@@ -994,7 +994,7 @@ const staffData = {
         10,
         5
       ],
-      "Hoang Thi J": [
+      "Hoang Thi Lan": [
         0,
         0,
         8,
@@ -1012,7 +1012,7 @@ const staffData = {
   },
   "hoan-my-hospital": {
     "teams": {
-      "Le Thi H": [
+      "Le Thi Hoa": [
         3,
         9,
         10,
@@ -1026,7 +1026,7 @@ const staffData = {
         4,
         4
       ],
-      "Tran Thi B": [
+      "Tran Thi Bao": [
         4,
         10,
         10,
@@ -1040,7 +1040,7 @@ const staffData = {
         0,
         6
       ],
-      "Hoang Van E": [
+      "Hoang Van Em": [
         6,
         3,
         10,
@@ -1054,7 +1054,7 @@ const staffData = {
         5,
         10
       ],
-      "Nguyen Van A": [
+      "Nguyen van An": [
         9,
         4,
         7,
@@ -1068,7 +1068,7 @@ const staffData = {
         3,
         6
       ],
-      "Hoang Thi J": [
+      "Hoang Thi Lan": [
         9,
         0,
         7,
@@ -1082,7 +1082,7 @@ const staffData = {
         10,
         4
       ],
-      "Le Van C": [
+      "Le Van Cuong": [
         8,
         10,
         0,
@@ -1096,7 +1096,7 @@ const staffData = {
         9,
         6
       ],
-      "Tran Van G": [
+      "Tran Van Giang": [
         8,
         4,
         0,
@@ -1110,7 +1110,7 @@ const staffData = {
         10,
         5
       ],
-      "Pham Van I": [
+      "Pham Van Minh": [
         6,
         10,
         10,
@@ -1124,7 +1124,7 @@ const staffData = {
         8,
         4
       ],
-      "Nguyen Thi F": [
+      "Nguyen Thi Phuong": [
         4,
         5,
         3,
@@ -1138,7 +1138,7 @@ const staffData = {
         4,
         4
       ],
-      "Pham Thi D": [
+      "Pham Thi Dung": [
         5,
         10,
         7,

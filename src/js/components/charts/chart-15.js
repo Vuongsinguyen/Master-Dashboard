@@ -43,15 +43,15 @@ const chart15 = () => {
     },
     xaxis: {
       categories: [
-        'Store A',
-        'Store B',
-        'Store C',
-        'Store D',
-        'Store E',
-        'Store F',
-        'Store G',
-        'Store H',
-        'Store I'
+        'Store Sala',
+        'Store WH0045',
+        'Warehouse Binh Dien',
+        'Store Metro12',
+        'Store HN007',
+        'Store QN001',
+        'Store VT010',
+        'Group Tan Son',
+        'Store B100'
       ],
       labels: {
         style: {
