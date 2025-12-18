@@ -6,6 +6,34 @@ const chart15 = () => {
       name: 'Feedback tiêu cực / 100 khách',
       data: [2.1, 3.5, 4.8, 5.2, 6.1, 7.8, 9.2, 11.5, 14.3]
     }],
+    title: {
+      text: 'Time & Shift Pattern',
+      align: 'center',
+      margin: 10,
+      offsetX: 0,
+      offsetY: 0,
+      floating: false,
+      style: {
+        fontSize: '16px',
+        fontWeight: 'bold',
+        fontFamily: undefined,
+        color: '#263238'
+      },
+    },
+    subtitle: {
+      text: 'Biểu đồ hiển thị tỷ lệ feedback tiêu cực trên 100 khách hàng theo thời gian và ca làm việc',
+      align: 'center',
+      margin: 10,
+      offsetX: 0,
+      offsetY: 20,
+      floating: false,
+      style: {
+        fontSize: '12px',
+        fontWeight: 'normal',
+        fontFamily: undefined,
+        color: '#9699a2'
+      },
+    },
     chart: {
       type: 'bar',
       height: 380,
