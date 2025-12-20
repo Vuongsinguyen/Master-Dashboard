@@ -1,3 +1,5 @@
+import dbService from '../../services/database.js';
+
 class GanttChart {
   constructor(containerId) {
     this.container = document.getElementById(containerId);
@@ -5,6 +7,7 @@ class GanttChart {
     this.currentTaskId = null;
     this.draggedTask = null;
     this.dragOffset = { x: 0, y: 0 };
+    this.isLoading = false;
 
     // Date range settings
     this.startDate = null;
@@ -44,6 +47,7 @@ class GanttChart {
 
     // Calculate total days between start and end date
     const totalDays = Math.ceil((this.endDate - this.startDate) / (1000 * 60 * 60 * 24)) + 1;
+    console.log('Creating timeline with totalDays:', totalDays, 'start:', this.startDate, 'end:', this.endDate);
 
     // Create day columns (limit to prevent too many columns)
     const maxDays = Math.min(totalDays, 60); // Limit to 60 days for performance
@@ -144,95 +148,208 @@ class GanttChart {
     this.currentTaskId = null;
   }
 
-  saveTask() {
+  async saveTask() {
     const form = document.getElementById('taskForm');
     if (!form) return;
 
     const taskData = {
       id: this.currentTaskId || Date.now().toString(),
       name: form.taskName.value,
-      startDate: form.taskStartDate.value,
-      endDate: form.taskEndDate.value,
+      start_date: form.taskStartDate.value,
+      end_date: form.taskEndDate.value,
       progress: parseInt(form.taskProgress.value),
       priority: form.taskPriority.value,
-      assignee: form.taskAssignee.value
+      assignee: form.taskAssignee.value,
+      created_at: new Date().toISOString()
     };
 
-    if (this.currentTaskId) {
-      // Update existing task
-      const index = this.tasks.findIndex(t => t.id === this.currentTaskId);
-      if (index !== -1) {
-        this.tasks[index] = taskData;
-      }
-    } else {
-      // Add new task
-      this.tasks.push(taskData);
-    }
+    try {
+      const savedTask = await dbService.saveTask(taskData);
 
-    this.saveTasks();
-    this.render();
-    this.hideTaskModal();
+      if (this.currentTaskId) {
+        // Update existing task in local array
+        const index = this.tasks.findIndex(t => t.id === this.currentTaskId);
+        if (index !== -1) {
+          this.tasks[index] = this.convertTaskFromDB(savedTask);
+        }
+      } else {
+        // Add new task to local array
+        this.tasks.push(this.convertTaskFromDB(savedTask));
+      }
+
+      this.render();
+      this.hideTaskModal();
+    } catch (error) {
+      console.error('Error saving task:', error);
+      alert('Error saving task. Please try again.');
+    }
   }
 
-  deleteTask(taskId) {
-    if (confirm('Are you sure you want to delete this task?')) {
+  convertTaskFromDB(task) {
+    return {
+      id: task.id,
+      name: task.name,
+      startDate: task.start_date,
+      endDate: task.end_date,
+      progress: task.progress,
+      priority: task.priority,
+      assignee: task.assignee,
+      created_at: task.created_at
+    };
+  }
+
+  async deleteTask(taskId) {
+    if (!confirm('Are you sure you want to delete this task?')) return;
+
+    try {
+      await dbService.deleteTask(taskId);
       this.tasks = this.tasks.filter(t => t.id !== taskId);
-      this.saveTasks();
+      this.render();
+    } catch (error) {
+      console.error('Error deleting task:', error);
+      alert('Error deleting task. Please try again.');
+    }
+  }
+
+  async loadTasks() {
+    try {
+      this.isLoading = true;
+      const tasks = await dbService.getTasks();
+      this.tasks = tasks || [];
+
+      // If no tasks in database, create sample tasks
+      if (this.tasks.length === 0) {
+        const sampleTasks = this.getSampleTasks();
+        for (const task of sampleTasks) {
+          await dbService.saveTask(task);
+        }
+        this.tasks = sampleTasks;
+      }
+    } catch (error) {
+      console.error('Error loading tasks:', error);
+      // Fallback to localStorage if database fails
+      const saved = localStorage.getItem('ganttTasks');
+      if (saved) {
+        this.tasks = JSON.parse(saved);
+      } else {
+        this.tasks = this.getSampleTasks();
+      }
+    } finally {
+      this.isLoading = false;
       this.render();
     }
   }
 
-  loadTasks() {
-    const saved = localStorage.getItem('ganttTasks');
-    if (saved) {
-      this.tasks = JSON.parse(saved);
-    } else {
-      // Sample tasks
-      const today = new Date();
-      const weekFromNow = new Date(today);
-      weekFromNow.setDate(today.getDate() + 7);
-      const twoWeeksFromNow = new Date(today);
-      twoWeeksFromNow.setDate(today.getDate() + 14);
-      const threeWeeksFromNow = new Date(today);
-      threeWeeksFromNow.setDate(today.getDate() + 21);
+  getSampleTasks() {
+    const today = new Date();
+    const weekFromNow = new Date(today);
+    weekFromNow.setDate(today.getDate() + 7);
+    const twoWeeksFromNow = new Date(today);
+    twoWeeksFromNow.setDate(today.getDate() + 14);
+    const threeWeeksFromNow = new Date(today);
+    threeWeeksFromNow.setDate(today.getDate() + 21);
 
-      this.tasks = [
-        {
-          id: '1',
-          name: 'Project Planning',
-          startDate: today.toISOString().split('T')[0],
-          endDate: weekFromNow.toISOString().split('T')[0],
-          progress: 100,
-          priority: 'high',
-          assignee: 'John Doe'
-        },
-        {
-          id: '2',
-          name: 'UI Design',
-          startDate: weekFromNow.toISOString().split('T')[0],
-          endDate: twoWeeksFromNow.toISOString().split('T')[0],
-          progress: 75,
-          priority: 'medium',
-          assignee: 'Jane Smith'
-        },
-        {
-          id: '3',
-          name: 'Development',
-          startDate: twoWeeksFromNow.toISOString().split('T')[0],
-          endDate: threeWeeksFromNow.toISOString().split('T')[0],
-          progress: 30,
-          priority: 'high',
-          assignee: 'Bob Johnson'
-        }
-      ];
+    return [
+      {
+        id: '1',
+        name: 'Project Planning',
+        start_date: today.toISOString().split('T')[0],
+        end_date: weekFromNow.toISOString().split('T')[0],
+        progress: 100,
+        priority: 'high',
+        assignee: 'John Doe',
+        created_at: new Date().toISOString()
+      },
+      {
+        id: '2',
+        name: 'UI Design',
+        start_date: weekFromNow.toISOString().split('T')[0],
+        end_date: twoWeeksFromNow.toISOString().split('T')[0],
+        progress: 75,
+        priority: 'medium',
+        assignee: 'Jane Smith',
+        created_at: new Date().toISOString()
+      },
+      {
+        id: '3',
+        name: 'Development',
+        start_date: twoWeeksFromNow.toISOString().split('T')[0],
+        end_date: threeWeeksFromNow.toISOString().split('T')[0],
+        progress: 30,
+        priority: 'high',
+        assignee: 'Bob Johnson',
+        created_at: new Date().toISOString()
+      }
+    ];
+  }
+
+  async saveTasks() {
+    try {
+      // Save all tasks to database
+      for (const task of this.tasks) {
+        await dbService.saveTask(this.convertTaskForDB(task));
+      }
+    } catch (error) {
+      console.error('Error saving tasks:', error);
+      // Fallback to localStorage
+      localStorage.setItem('ganttTasks', JSON.stringify(this.tasks));
     }
   }
 
-  saveTasks() {
-    localStorage.setItem('ganttTasks', JSON.stringify(this.tasks));
+  convertTaskForDB(task) {
+    return {
+      id: task.id,
+      name: task.name,
+      start_date: task.startDate || task.start_date,
+      end_date: task.endDate || task.end_date,
+      progress: task.progress,
+      priority: task.priority,
+      assignee: task.assignee,
+      created_at: task.created_at || new Date().toISOString()
+    };
+  }
+
+  addEventListeners() {
+    // Add Task Button
+    const addTaskBtn = document.getElementById('addTaskBtn');
+    if (addTaskBtn) {
+      addTaskBtn.addEventListener('click', () => {
+        this.showTaskModal();
+      });
+    }
+
+    // Close Modal Button
+    const closeModalBtn = document.getElementById('closeModalBtn');
+    if (closeModalBtn) {
+      closeModalBtn.addEventListener('click', () => {
+        this.hideTaskModal();
+      });
+    }
+
+    // Modal Backdrop
+    const modalBackdrop = document.getElementById('modalBackdrop');
+    if (modalBackdrop) {
+      modalBackdrop.addEventListener('click', () => {
+        this.hideTaskModal();
+      });
+    }
+
+    // Task Form Submit
+    const taskForm = document.getElementById('taskForm');
+    if (taskForm) {
+      taskForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        this.saveTask();
+      });
+    }
   }
 
   render() {
+    console.log('Rendering Gantt with range:', this.startDate, this.endDate);
+    
+    // Update timeline header first
+    this.createTimelineHeader();
+    
     // Clear existing task rows
     const existingRows = this.container.querySelectorAll('.gantt-task-row');
     existingRows.forEach(row => row.remove());
@@ -303,8 +420,8 @@ class GanttChart {
   }
 
   renderTaskBar(task, timelineContainer) {
-    const taskStart = new Date(task.startDate);
-    const taskEnd = new Date(task.endDate);
+    const taskStart = new Date(task.startDate || task.start_date);
+    const taskEnd = new Date(task.endDate || task.end_date);
 
     // Calculate position in pixels (40px per day)
     const startOffsetDays = Math.max(0, Math.ceil((taskStart - this.startDate) / (1000 * 60 * 60 * 24)));
@@ -389,16 +506,19 @@ class GanttChart {
     const newStartDate = new Date(this.startDate);
     newStartDate.setDate(newStartDate.getDate() + daysOffset);
 
-    const duration = Math.max(1, (new Date(task.endDate) - new Date(task.startDate)) / (1000 * 60 * 60 * 24));
+    const duration = Math.max(1, (new Date(task.endDate || task.end_date) - new Date(task.startDate || task.start_date)) / (1000 * 60 * 60 * 24));
     const newEndDate = new Date(newStartDate);
     newEndDate.setDate(newStartDate.getDate() + duration);
 
     task.startDate = newStartDate.toISOString().split('T')[0];
     task.endDate = newEndDate.toISOString().split('T')[0];
+    task.start_date = newStartDate.toISOString().split('T')[0];
+    task.end_date = newEndDate.toISOString().split('T')[0];
   }
 
   setupDualCalendar() {
     this.dualCalendar = new DualCalendarPicker('timelineDateRange', (startDate, endDate) => {
+      console.log('Date range selected:', startDate, endDate);
       this.startDate = startDate;
       this.endDate = endDate;
       this.saveDateRange();
@@ -447,6 +567,14 @@ class DualCalendarPicker {
   }
 
   init() {
+    // Disable flatpickr for this input if it exists
+    if (typeof flatpickr !== 'undefined') {
+      const fp = this.input._flatpickr;
+      if (fp) {
+        fp.destroy();
+      }
+    }
+
     // Show calendar when clicking input
     this.input.addEventListener('click', (e) => {
       e.stopPropagation();
@@ -470,12 +598,14 @@ class DualCalendarPicker {
     });
 
     // Cancel button
-    document.getElementById('cancelRange').addEventListener('click', () => {
+    document.getElementById('cancelRange').addEventListener('click', (e) => {
+      e.stopPropagation();
       this.hide();
     });
 
     // Confirm button
-    document.getElementById('confirmRange').addEventListener('click', () => {
+    document.getElementById('confirmRange').addEventListener('click', (e) => {
+      e.stopPropagation();
       if (this.startDate && this.endDate) {
         this.onRangeSelect(this.startDate, this.endDate);
         this.updateInput();
@@ -488,6 +618,7 @@ class DualCalendarPicker {
   }
 
   show() {
+    console.log('Showing dual calendar');
     this.container.classList.remove('hidden');
     this.renderCalendars();
   }
@@ -513,9 +644,9 @@ class DualCalendarPicker {
   }
 
   formatDate(date) {
-    return date.toLocaleDateString('vi-VN', {
-      day: '2-digit',
-      month: '2-digit',
+    return date.toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
       year: 'numeric'
     });
   }
@@ -531,30 +662,83 @@ class DualCalendarPicker {
 
     // Month/Year header
     const header = document.createElement('div');
-    header.className = 'flex justify-between items-center mb-2';
+    header.className = 'flex justify-between items-center mb-3 gap-2';
 
     const prevBtn = document.createElement('button');
     prevBtn.className = 'p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded';
     prevBtn.innerHTML = '‹';
-    prevBtn.addEventListener('click', () => {
-      currentMonth.setMonth(currentMonth.getMonth() - 1);
+    prevBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (type === 'start') {
+        this.currentStartMonth.setMonth(this.currentStartMonth.getMonth() - 1);
+      } else {
+        this.currentEndMonth.setMonth(this.currentEndMonth.getMonth() - 1);
+      }
+      this.renderCalendars();
+    });
+
+    // Month selector
+    const monthSelect = document.createElement('select');
+    monthSelect.className = 'px-2 py-1 text-xs border rounded dark:bg-gray-700 dark:border-gray-600';
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    months.forEach((month, idx) => {
+      const option = document.createElement('option');
+      option.value = idx;
+      option.textContent = month;
+      if (idx === currentMonth.getMonth()) {
+        option.selected = true;
+      }
+      monthSelect.appendChild(option);
+    });
+    monthSelect.addEventListener('change', (e) => {
+      e.stopPropagation();
+      if (type === 'start') {
+        this.currentStartMonth.setMonth(parseInt(e.target.value));
+      } else {
+        this.currentEndMonth.setMonth(parseInt(e.target.value));
+      }
+      this.renderCalendars();
+    });
+
+    // Year selector
+    const yearSelect = document.createElement('select');
+    yearSelect.className = 'px-2 py-1 text-xs border rounded dark:bg-gray-700 dark:border-gray-600';
+    const currentYear = currentMonth.getFullYear();
+    for (let year = currentYear - 5; year <= currentYear + 5; year++) {
+      const option = document.createElement('option');
+      option.value = year;
+      option.textContent = year;
+      if (year === currentYear) {
+        option.selected = true;
+      }
+      yearSelect.appendChild(option);
+    }
+    yearSelect.addEventListener('change', (e) => {
+      e.stopPropagation();
+      if (type === 'start') {
+        this.currentStartMonth.setFullYear(parseInt(e.target.value));
+      } else {
+        this.currentEndMonth.setFullYear(parseInt(e.target.value));
+      }
       this.renderCalendars();
     });
 
     const nextBtn = document.createElement('button');
     nextBtn.className = 'p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded';
     nextBtn.innerHTML = '›';
-    nextBtn.addEventListener('click', () => {
-      currentMonth.setMonth(currentMonth.getMonth() + 1);
+    nextBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (type === 'start') {
+        this.currentStartMonth.setMonth(this.currentStartMonth.getMonth() + 1);
+      } else {
+        this.currentEndMonth.setMonth(this.currentEndMonth.getMonth() + 1);
+      }
       this.renderCalendars();
     });
 
-    const monthYear = document.createElement('span');
-    monthYear.className = 'text-sm font-medium';
-    monthYear.textContent = currentMonth.toLocaleDateString('vi-VN', { month: 'long', year: 'numeric' });
-
     header.appendChild(prevBtn);
-    header.appendChild(monthYear);
+    header.appendChild(monthSelect);
+    header.appendChild(yearSelect);
     header.appendChild(nextBtn);
     container.appendChild(header);
 
@@ -599,7 +783,8 @@ class DualCalendarPicker {
         dayDiv.classList.add('in-range');
       }
 
-      dayDiv.addEventListener('click', () => {
+      dayDiv.addEventListener('click', (e) => {
+        e.stopPropagation();
         this.selectDate(date, type);
       });
 
@@ -625,10 +810,10 @@ class DualCalendarPicker {
 
   selectDate(date, type) {
     if (type === 'start') {
+      // Clear previous selection when selecting a new start date
+      this.startDate = null;
+      this.endDate = null;
       this.startDate = new Date(date);
-      if (this.endDate && this.startDate > this.endDate) {
-        this.endDate = null;
-      }
       // Auto-adjust end calendar month if start date is in a different month
       if (this.startDate.getMonth() !== this.currentEndMonth.getMonth() ||
           this.startDate.getFullYear() !== this.currentEndMonth.getFullYear()) {
@@ -656,9 +841,9 @@ class DualCalendarPicker {
       this.selectedRange.textContent = `${startStr} - ${endStr}`;
     } else if (this.startDate) {
       const startStr = this.formatDate(this.startDate);
-      this.selectedRange.textContent = `Từ ${startStr}`;
+      this.selectedRange.textContent = `From ${startStr}`;
     } else {
-      this.selectedRange.textContent = 'Chưa chọn khoảng thời gian';
+      this.selectedRange.textContent = 'No date range selected';
     }
   }
 }
