@@ -2,41 +2,140 @@
   <div class="mb-4 justify-between gap-4 sm:flex">
     <div>
       <h4 class="text-xl font-semibold text-black dark:text-white">
-        🎯 Customer Patience Level
+        📅 Timeline với Scroll Ngang
       </h4>
       <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
-        "The problem isn’t that customers don’t have feedback — it’s that they don’t have the patience to give it."
+        "Xem timeline với nhiều ngày và scroll ngang để điều hướng"
       </p>
     </div>
   </div>
 
+  <!-- Date Range Controls -->
   <div class="mb-4">
-    <div class="flex w-full flex-col">
-      <div class="grid grid-cols-1 gap-4">
-        <div class="flex items-center justify-center">
-          <div id="chart-12" class="w-full"></div>
+    <div class="flex flex-col gap-4">
+      <div class="flex items-center gap-4">
+        <label class="text-sm font-medium text-gray-700 dark:text-gray-300">Chọn khoảng thời gian:</label>
+        <div class="relative">
+          <input type="text" id="timelineDateRange" class="px-4 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white w-64" placeholder="Chọn khoảng thời gian" readonly>
+          <button id="clearDateRange" class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          </button>
+        </div>
+        <button id="applyTimelineRange" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 text-sm font-medium transition-colors">
+          Áp dụng
+        </button>
+      </div>
+
+      <!-- Dual Calendar Display -->
+      <div id="dualCalendarContainer" class="hidden fixed z-50 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg shadow-lg p-4 w-max max-w-2xl">
+        <style>
+          .calendar-grid {
+            min-width: 280px;
+          }
+          .calendar-section {
+            min-width: 280px;
+          }
+          .calendar-section .grid {
+            display: grid;
+          }
+          .calendar-section .grid-cols-7 {
+            grid-template-columns: repeat(7, 1fr);
+          }
+          .calendar-section .gap-1 {
+            gap: 0.25rem;
+          }
+          .calendar-day {
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            transition: all 0.2s;
+          }
+          .calendar-day:hover {
+            background-color: #dbeafe;
+          }
+          .calendar-day.selected {
+            background-color: #3b82f6;
+            color: white;
+          }
+          .calendar-day.in-range {
+            background-color: #dbeafe;
+            color: #1e40af;
+          }
+          .calendar-day.other-month {
+            color: #9ca3af;
+          }
+        </style>
+        <div class="flex gap-4">
+          <!-- Start Date Calendar -->
+          <div class="calendar-section">
+            <h4 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 text-center">Ngày bắt đầu</h4>
+            <div id="startCalendar" class="calendar-grid"></div>
+          </div>
+
+          <!-- End Date Calendar -->
+          <div class="calendar-section">
+            <h4 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 text-center">Ngày kết thúc</h4>
+            <div id="endCalendar" class="calendar-grid"></div>
+          </div>
+        </div>
+
+        <div class="flex justify-between items-center mt-4 pt-4 border-t border-gray-200 dark:border-gray-600">
+          <div class="text-sm text-gray-600 dark:text-gray-400">
+            <span id="selectedRange">Chưa chọn khoảng thời gian</span>
+          </div>
+          <div class="flex gap-2">
+            <button id="cancelRange" class="px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200">
+              Hủy
+            </button>
+            <button id="confirmRange" class="px-3 py-1 bg-blue-500 text-white text-sm rounded hover:bg-blue-600">
+              Xác nhận
+            </button>
+          </div>
         </div>
       </div>
     </div>
   </div>
 
-  <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-    <div class="rounded-sm bg-blue-50 dark:bg-blue-900 p-4">
-      <h5 class="text-sm font-semibold text-blue-800 dark:text-blue-200 mb-2">Feedback Rate by Interaction Complexity</h5>
-      <ul class="text-sm text-blue-700 dark:text-blue-300 space-y-1">
-        <li>• <strong>100%</strong> of customers visit the store</li>
-        <li>• <strong>~8–12%</strong> of customers are willing to give feedback if asked lengthy questions</li>
-        <li>• <strong>25–40%</strong> feedback if only 1–2 interactions are needed</li>
-      </ul>
+  <!-- Timeline Container with Horizontal Scroll -->
+  <div class="mb-4">
+    <div class="w-full overflow-x-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 dark:scrollbar-thumb-gray-600 dark:scrollbar-track-gray-800">
+      <div id="timelineChart" class="min-w-max flex flex-col">
+        <!-- Timeline Header -->
+        <div id="timelineHeader" class="flex border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 sticky top-0 z-10">
+          <div class="w-48 flex-shrink-0 p-3 font-semibold text-gray-700 dark:text-gray-300 border-r border-gray-200 dark:border-gray-700">
+            Sự kiện
+          </div>
+          <div id="timelineDates" class="flex">
+            <!-- Dates will be dynamically generated -->
+          </div>
+        </div>
+
+        <!-- Timeline Body -->
+        <div id="timelineBody" class="flex flex-col">
+          <!-- Timeline items will be dynamically generated -->
+        </div>
+      </div>
     </div>
-    <div class="rounded-sm bg-red-50 dark:bg-red-900 p-4">
-      <h5 class="text-sm font-semibold text-red-800 dark:text-red-200 mb-2">Impact of Adding Questions</h5>
-      <p class="text-sm text-red-700 dark:text-red-300">
-        Impact of Adding Questions <strong>~20–30%</strong>
-      </p>
-      <p class="text-xs text-red-600 dark:text-red-400 mt-2">
-        👉 So: "We clearly see one point: for each additional question, the feedback rate decreases by ~20–30%."
-      </p>
+  </div>
+
+  <!-- Legend -->
+  <div class="mt-4 flex flex-wrap gap-4 text-sm">
+    <div class="flex items-center gap-2">
+      <div class="w-4 h-4 bg-blue-500 rounded"></div>
+      <span class="text-gray-600 dark:text-gray-400">Hoàn thành</span>
+    </div>
+    <div class="flex items-center gap-2">
+      <div class="w-4 h-4 bg-yellow-500 rounded"></div>
+      <span class="text-gray-600 dark:text-gray-400">Đang thực hiện</span>
+    </div>
+    <div class="flex items-center gap-2">
+      <div class="w-4 h-4 bg-red-500 rounded"></div>
+      <span class="text-gray-600 dark:text-gray-400">Chưa bắt đầu</span>
     </div>
   </div>
 </div>
